@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#064e3b">
+<title>Connexion — INVESTPRO CI</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f3f7f5;
+color:#10231b;
+min-height:100vh;
+display:flex;
+flex-direction:column
+}
+
+header{
+background:linear-gradient(135deg,#003d2d,#087548);
+padding:20px;
+text-align:center;
+color:white
+}
+
+.logo{
+font-size:27px;
+font-weight:900;
+color:#ffd45a
+}
+
+main{
+width:100%;
+max-width:470px;
+margin:auto;
+padding:25px 18px
+}
+
+.card{
+background:white;
+padding:30px 24px;
+border-radius:18px;
+box-shadow:0 8px 30px #003d2d18
+}
+
+h1{
+text-align:center;
+color:#075d3e;
+margin-top:0
+}
+
+.subtitle{
+text-align:center;
+color:#64748b;
+margin-bottom:25px
+}
+
+label{
+display:block;
+font-weight:bold;
+margin:14px 0 6px
+}
+
+input{
+width:100%;
+padding:15px;
+border:1px solid #ccd8d2;
+border-radius:9px;
+font-size:16px;
+outline:none
+}
+
+input:focus{
+border-color:#087548;
+box-shadow:0 0 0 3px #08754818
+}
+
+button{
+width:100%;
+padding:15px;
+margin-top:22px;
+border:0;
+border-radius:9px;
+background:#eab92d;
+color:#10231b;
+font-size:16px;
+font-weight:900;
+cursor:pointer
+}
+
+.message{
+text-align:center;
+margin-top:15px;
+font-size:14px
+}
+
+.bottom{
+text-align:center;
+margin-top:20px
+}
+
+.bottom a{
+color:#075d3e;
+font-weight:bold;
+text-decoration:none
+}
+
+.back{
+display:block;
+text-align:center;
+margin-top:15px;
+color:#075d3e;
+text-decoration:none;
+font-weight:bold
+}
+
+footer{
+text-align:center;
+padding:20px;
+color:#64748b;
+font-size:13px
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">♛ INVESTPRO CI</div>
+</header>
+
+<main>
+
+<div class="card">
+
+<h1>Connexion</h1>
+
+<p class="subtitle">
+Accédez à votre espace personnel
+</p>
+
+<form id="form">
+
+<label for="phone">Numéro de téléphone</label>
+
+<input
+id="phone"
+type="tel"
+placeholder="+225 07 00 00 00 00"
+autocomplete="tel"
+required
+>
+
+<label for="password">Mot de passe</label>
+
+<input
+id="password"
+type="password"
+placeholder="Votre mot de passe"
+autocomplete="current-password"
+required
+>
+
+<button type="submit">
+Se connecter
+</button>
+
+</form>
+
+<div id="message" class="message"></div>
+
+<div class="bottom">
+Pas encore de compte ?
+<a href="/inscription.html">Créer un compte</a>
+</div>
+
+<a class="back" href="/">← Retour à l'accueil</a>
+
+</div>
+
+</main>
+
+<footer>
+🇨🇮 INVESTPRO CI • FCFA (XOF)
+</footer>
+
+<script>
+
+const form=document.getElementById('form');
+const message=document.getElementById('message');
+
+form.addEventListener('submit',async function(e){
+
+e.preventDefault();
+
+const phone=document.getElementById('phone').value.trim();
+const password=document.getElementById('password').value;
+
+try{
+
+const response=await fetch('/api/login',{
+credentials:'same-origin',
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({
+phone:phone,
+password:password
+})
+});
+
+const data=await response.json();
+
+if(data.error){
+
+message.textContent=data.error;
+message.style.color="#dc2626";
+
+}else{
+
+message.textContent="Connexion réussie.";
+message.style.color="#15803d";
+
+setTimeout(()=>{
+window.location.href="/dashboard.html";
+},700);
+
+}
+
+}catch(error){
+
+message.textContent="Impossible de contacter le serveur.";
+message.style.color="#dc2626";
+
+}
+
+});
+
+</script>
+
+</body>
+</html>

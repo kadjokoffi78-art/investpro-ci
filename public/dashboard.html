@@ -1,0 +1,1370 @@
+cd ~/investpro
+sed -n '610,700p' public/dashboard.html<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#003d2d">
+<title>Mon tableau de bord - INVESTPRO CI</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f7f5;
+  color: #173328;
+}
+
+header {
+  background: #003d2d;
+  color: white;
+  padding: 18px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  color: #ffd45a;
+  font-size: 21px;
+  font-weight: 900;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+main {
+  width: 100%;
+  max-width: 1050px;
+  margin: auto;
+  padding: 25px 16px 40px;
+}
+
+h1 {
+  font-size: 27px;
+  margin-bottom: 8px;
+  color: #075d3e;
+}
+
+.subtitle {
+  color: #64756c;
+  margin-bottom: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 15px;
+  margin: 22px 0;
+}
+
+.card {
+  background: white;
+  padding: 21px;
+  border-radius: 16px;
+  box-shadow: 0 5px 18px rgba(0, 61, 45, 0.07);
+  margin-bottom: 18px;
+  min-width: 0;
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 17px;
+  color: #075d3e;
+}
+
+.balance {
+  background: linear-gradient(135deg, #003d2d, #087548);
+  color: white;
+}
+
+.balance h2 {
+  color: #e5f4ec;
+  font-size: 16px;
+}
+
+.balance .stat {
+  color: #ffd45a;
+  font-size: clamp(23px, 5vw, 32px);
+  overflow-wrap: anywhere;
+}
+
+.stat {
+  color: #075d3e;
+  font-size: 27px;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.label {
+  font-size: 13px;
+  color: #728078;
+  margin-bottom: 12px;
+}
+
+.balance .label {
+  color: #d2e8dc;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 14px 18px;
+  background: #eab92d;
+  color: #173328;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button.dark {
+  background: #075d3e;
+  color: white;
+}
+
+.account-row {
+  padding: 13px 0;
+  border-bottom: 1px solid #edf1ee;
+  overflow-wrap: anywhere;
+}
+
+.account-row:last-child {
+  border-bottom: none;
+}
+
+.account-row span {
+  display: block;
+  font-size: 13px;
+  color: #728078;
+  margin-bottom: 5px;
+}
+
+.account-row strong {
+  font-size: 15px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 360px;
+}
+
+th, td {
+  text-align: left;
+  padding: 14px 10px;
+  border-bottom: 1px solid #edf1ee;
+  font-size: 14px;
+}
+
+th {
+  color: #64756c;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.empty {
+  color: #728078;
+  text-align: center;
+  padding: 22px 8px;
+}
+
+footer {
+  text-align: center;
+  color: #849188;
+  font-size: 12px;
+  padding: 10px 15px 25px;
+}
+
+@media (max-width: 700px) {
+  header {
+    padding: 16px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  main {
+    padding: 23px 14px 30px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 11px;
+  }
+
+  .balance {
+    grid-column: 1 / -1;
+  }
+
+  .card {
+    padding: 17px;
+    border-radius: 14px;
+  }
+
+  .stat {
+    font-size: 23px;
+  }
+
+  .actions button {
+    flex: 1;
+    min-width: 125px;
+  }
+}
+
+@media (max-width: 360px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .balance {
+    grid-column: auto;
+  }
+}
+
+/* Menu de navigation INVESTPRO CI */
+#menu-investpro {
+  background: #ffffff;
+  padding: 10px 5%;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 2px solid #eab92d;
+  box-shadow: 0 3px 12px rgba(0,61,45,.08);
+}
+#menu-investpro a {
+  display: block;
+  padding: 11px 14px;
+  border-radius: 9px;
+  background: #edf6f0;
+  color: #075d3e;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+#menu-investpro a:hover {
+  background: #075d3e;
+  color: #ffffff;
+}
+@media(max-width:600px) {
+  #menu-investpro {
+    padding: 10px;
+    gap: 7px;
+  }
+  #menu-investpro a {
+    flex: 1 1 42%;
+    text-align: center;
+    font-size: 13px;
+    padding: 12px 6px;
+  }
+}
+
+
+
+/* MENU MOBILE : TAILLE NORMALE ET LISIBLE */
+#menu-investpro {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    top: auto !important;
+    z-index: 99999 !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 10px 8px calc(10px + env(safe-area-inset-bottom)) !important;
+    margin: 0 !important;
+    background: #10251c !important;
+    border-top: 2px solid #d4af37 !important;
+    border-radius: 14px 14px 0 0 !important;
+    box-shadow: 0 -3px 14px rgba(0,0,0,0.25) !important;
+}
+
+#menu-investpro a {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    min-height: 48px !important;
+    padding: 8px 3px !important;
+    margin: 0 !important;
+    color: #ffffff !important;
+    background: transparent !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    line-height: 1.35 !important;
+    overflow-wrap: anywhere !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+}
+
+#menu-investpro a:active {
+    background: #286344 !important;
+}
+
+body {
+    padding-bottom: 125px !important;
+}
+
+@media (max-width: 380px) {
+    #menu-investpro {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 3px !important;
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
+    #menu-investpro a {
+        font-size: 11px !important;
+    }
+}
+
+
+/* MENU MOBILE INVESTPRO EN HAUT */
+#investpro-mobile-menu {
+  position: relative;
+  z-index: 10000;
+  width: 100%;
+  margin: 0 0 16px;
+  font-family: Arial, sans-serif;
+}
+#investpro-menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 58px;
+  padding: 12px 16px;
+  border: 0;
+  border-bottom: 3px solid #d4af37;
+  border-radius: 0 0 12px 12px;
+  background: #10251c;
+  color: #f4cf62;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+#investpro-menu-icon {
+  color: white;
+  font-size: 28px;
+  line-height: 1;
+}
+#menu-investpro[hidden] {
+  display: none !important;
+}
+#menu-investpro:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 6px;
+  padding: 6px;
+  background: #10251c;
+  border: 1px solid #d4af37;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.22);
+}
+#menu-investpro a {
+  display: block;
+  padding: 14px 12px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,.14);
+}
+#menu-investpro a:last-child {
+  border-bottom: 0;
+}
+#menu-investpro a:active {
+  background: #286344;
+}
+body {
+  padding-bottom: 20px !important;
+}
+
+
+/* CORRECTION : MENU HORIZONTAL EN HAUT */
+#investpro-mobile-menu {
+  position: relative !important;
+  top: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
+  width: 100% !important;
+  margin: 0 0 16px !important;
+  z-index: 10000 !important;
+}
+
+#investpro-menu-toggle {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 58px !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  background: #10251c !important;
+  color: #f4cf62 !important;
+  font-size: 18px !important;
+}
+
+#menu-investpro:not([hidden]) {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 8px !important;
+  position: static !important;
+  top: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  background: #10251c !important;
+  border: 1px solid #d4af37 !important;
+  border-radius: 12px !important;
+  padding: 10px !important;
+  margin-top: 6px !important;
+}
+
+#menu-investpro a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  padding: 12px 14px !important;
+  color: #ffffff !important;
+  font-size: 15px !important;
+  white-space: nowrap !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  border-radius: 8px !important;
+}
+
+body {
+  padding-bottom: 20px !important;
+}
+
+</style>
+</head>
+
+<body>
+
+
+<div id="investpro-mobile-menu">
+  <button type="button" id="investpro-menu-toggle"
+          aria-expanded="false" aria-controls="menu-investpro">
+    <span>♛ INVESTPRO CI</span>
+    <span id="investpro-menu-icon">☰</span>
+  </button>
+  <nav id="menu-investpro" aria-label="Menu principal" hidden>
+    <a href="/">🏠 Accueil</a>
+    <a href="/produits.html">🛍️ Produits</a>
+    <a href="/dashboard.html#investments">💼 Investissements</a>
+    <a href="/dashboard.html">📊 Mon tableau de bord</a>
+    <a href="#" onclick="document.getElementById('depositButton')?.click(); return false;">💰 Déposer</a>
+    <a href="#" onclick="document.getElementById('withdrawButton')?.click(); return false;">💸 Retirer</a>
+    <a href="#" onclick="document.getElementById('history')?.scrollIntoView({behavior:'smooth',block:'center'}); return false;">📋 Historique</a>
+    <a href="#" onclick="document.getElementById('logoutLink')?.click(); return false;">🚪 Déconnexion</a>
+  </nav>
+</div>
+
+
+
+<header>
+  <div class="logo">♛ INVESTPRO CI</div>
+  <a href="#" id="logoutLink">Déconnexion ↗</a>
+</header>
+
+<main>
+  <h1>Mon tableau de bord</h1>
+  <p class="subtitle">Bienvenue, <strong id="name">Utilisateur</strong> 👋</p>
+
+  <div class="grid">
+    <div class="card balance">
+      <h2>💰 Solde disponible</h2>
+      <div class="stat" id="balance">0 FCFA</div>
+      <p class="label">Solde affiché sur votre compte</p>
+    </div>
+
+    <div class="card">
+      <h2>📈 Investissements</h2>
+      <div class="stat" id="investments">0</div>
+      <p class="label">Nombre enregistré</p>
+    </div>
+
+    <div class="card">
+      <h2>✨ Gains</h2>
+      <div class="stat" id="gains">0 FCFA</div>
+      <p class="label">Gains affichés</p>
+    </div>
+  </div>
+
+  <div class="card" id="investment-details">
+    <h2>💼 Mes investissements en détail</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Plan</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="investment-list">
+          <tr><td colspan="4" class="empty">Chargement...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⚡ Opérations</h2>
+    <p>Choisissez l'opération que vous souhaitez demander.</p>
+    <div class="actions">
+      <button type="button" id="depositButton">💰 Déposer</button>
+      <button type="button" class="dark" id="withdrawButton">🏦 Retirer</button>
+    </div>
+  </div>
+
+  
+  <div class="card" id="referral">
+    <h2>🎁 Inviter des amis & Bonus</h2>
+    <p>Invitez vos amis et recevez des bonus lorsqu'ils investissent.</p>
+
+    <div class="grid" style="margin-top:15px;">
+
+      <div class="card">
+        <h3>Équipe niveau 1</h3>
+        <strong style="font-size:24px;">23%</strong>
+        <p>Utilisateurs valides : <strong id="level1Users">0</strong></p>
+        <p>Revenu : <strong id="level1Revenue">0 FCFA</strong></p>
+      </div>
+
+      <div class="card">
+        <h3>Équipe niveau 2</h3>
+        <strong style="font-size:24px;">3%</strong>
+        <p>Utilisateurs valides : <strong id="level2Users">0</strong></p>
+        <p>Revenu : <strong id="level2Revenue">0 FCFA</strong></p>
+      </div>
+
+      <div class="card">
+        <h3>Équipe niveau 3</h3>
+        <strong style="font-size:24px;">1%</strong>
+        <p>Utilisateurs valides : <strong id="level3Users">0</strong></p>
+        <p>Revenu : <strong id="level3Revenue">0 FCFA</strong></p>
+      </div>
+
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <h3>👥 Mon équipe</h3>
+
+      <div class="account-row">
+        <span>Utilisateurs valides</span>
+        <strong id="validUsers">0</strong>
+      </div>
+
+      <div class="account-row">
+        <span>Revenu invité</span>
+        <strong id="referralRevenue">0 FCFA</strong>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <h3>🔗 Inviter un ami</h3>
+
+      <p>Partagez votre lien d'invitation :</p>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <input
+          id="referralLink"
+          type="text"
+          readonly
+          style="flex:1;min-width:220px;padding:10px;"
+        >
+
+        <button
+          type="button"
+          id="copyReferral"
+          class="btn"
+        >
+          Copier le lien
+        </button>
+      </div>
+    </div>
+
+    <div style="margin-top:18px;">
+      <p>Lorsqu'un ami s'inscrit et investit, vous recevez <strong>23%</strong> en récompense.</p>
+      <p>Lorsque les membres de niveau 2 investissent, vous recevez <strong>3%</strong> de bonus.</p>
+      <p>Lorsque les membres de niveau 3 investissent, vous recevez <strong>1%</strong> de bonus.</p>
+      <p><strong>Le bonus en espèces est instantanément crédité sur votre compte.</strong></p>
+    </div>
+  </div>
+
+<div class="card">
+    <h2>👤 Mon compte</h2>
+    <div class="account-row">
+      <span>Nom complet</span>
+      <strong id="profileName">—</strong>
+    </div>
+    <div class="account-row">
+      <span>Adresse e-mail</span>
+      <strong id="profileEmail">—</strong>
+    </div>
+    <div class="account-row">
+      <span>Téléphone</span>
+      <strong id="profilePhone">—</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📋 Historique des opérations</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Montant</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody id="history">
+          <tr><td colspan="3" class="empty">Chargement...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<section class="card" style="margin-top:20px;">
+  <h2>🔐 Modifier mon mot de passe</h2>
+
+  <form id="changePasswordForm">
+    <label for="oldPassword">Ancien mot de passe</label>
+    <input
+      id="oldPassword"
+      type="password"
+      autocomplete="current-password"
+      required
+    >
+
+    <label for="newPassword" style="display:block;margin-top:12px;">
+      Nouveau mot de passe
+    </label>
+    <input
+      id="newPassword"
+      type="password"
+      autocomplete="new-password"
+      minlength="8"
+      required
+    >
+
+    <label for="confirmPassword" style="display:block;margin-top:12px;">
+      Confirmer le nouveau mot de passe
+    </label>
+    <input
+      id="confirmPassword"
+      type="password"
+      autocomplete="new-password"
+      minlength="8"
+      required
+    >
+
+    <button type="submit" style="margin-top:15px;">
+      Modifier le mot de passe
+    </button>
+
+    <p id="changePasswordMessage" style="margin-top:12px;"></p>
+  </form>
+</section>
+
+</main>
+
+<footer>
+  INVESTPRO CI · Espace personnel
+  <br><br>
+  Les montants affichés dépendent des données fournies par le serveur.
+</footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, function (c) {
+    return {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[c];
+  });
+}
+
+async function load() {
+  try {
+    const r = await fetch('/api/me');
+    const d = await r.json();
+
+    if (!r.ok || d.error || !d.user) {
+      location.href = '/connexion.html';
+      return;
+    }
+
+    $('name').textContent = d.user.name || 'Utilisateur';
+    $('profileName').textContent = d.user.name || '—';
+    $('profileEmail').textContent = d.user.email || '—';
+    $('profilePhone').textContent = d.user.phone || '—';
+
+    $('balance').textContent =
+      Number(d.user.balance || 0).toLocaleString('fr-FR') + ' FCFA';
+
+    $('gains').textContent =
+      Number(d.user.gains || 0).toLocaleString('fr-FR') + ' FCFA';
+
+    const investments = d.investments || [];
+    $('investments').textContent = investments.length;
+
+    if (investments.length === 0) {
+      $('investment-list').innerHTML =
+        '<tr><td colspan="4" class="empty">Aucun investissement enregistré.</td></tr>';
+    } else {
+      $('investment-list').innerHTML = investments.map(x => {
+        const date = x.created_at ? new Date(x.created_at) : null;
+        const dateText = date && !Number.isNaN(date.getTime())
+          ? date.toLocaleString('fr-FR')
+          : (x.created_at || '—');
+
+        return '<tr>' +
+          '<td>' + escapeHTML(x.plan || '—') + '</td>' +
+          '<td>' + Number(x.amount || 0).toLocaleString('fr-FR') + ' FCFA</td>' +
+          '<td>' + escapeHTML(x.status || '—') + '</td>' +
+          '<td>' + escapeHTML(dateText) + '</td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    const transactions = d.transactions || [];
+
+    if (transactions.length === 0) {
+      $('history').innerHTML =
+        '<tr><td colspan="3" class="empty">Aucune opération enregistrée.</td></tr>';
+    } else {
+      $('history').innerHTML = transactions.map(x =>
+        '<tr><td>' + escapeHTML(x.type) + '</td>' +
+        '<td>' + Number(x.amount || 0).toLocaleString('fr-FR') + ' FCFA</td>' +
+        '<td>' + escapeHTML(x.status) + '</td></tr>'
+      ).join('');
+    }
+  } catch (e) {
+    $('history').innerHTML =
+      '<tr><td colspan="3" class="empty">Impossible de charger les données. Vérifiez le serveur.</td></tr>';
+  }
+}
+
+
+
+async function deposit() {
+  const previous = document.getElementById('deposit-modal');
+  if (previous) previous.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'deposit-modal';
+  modal.style.cssText =
+    'position:fixed;inset:0;z-index:99999;background:rgba(0,20,15,.75);overflow:auto;padding:18px;display:flex;align-items:center;justify-content:center;';
+
+  modal.innerHTML = `
+    <section style="width:100%;max-width:480px;background:#fff;border-radius:20px;padding:22px;color:#18352b;font-family:Arial,sans-serif;">
+      <h2 style="margin:0 0 6px;color:#075d3e;">Faire un dépôt</h2>
+      <p style="color:#68766f;margin-top:0;">Choisis ton moyen de paiement.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+        <button type="button" data-method="wave"
+          aria-pressed="false"
+          style="border:2px solid #ddd;border-radius:14px;padding:14px 8px;background:white;color:#18352b;min-height:115px;">
+          <img src="/images/wave.png" alt="Logo Wave"
+            style="width:100%;height:40px;object-fit:contain;">
+          <strong>Wave Marchand</strong>
+          <div style="font-size:12px;color:#16834a;margin-top:6px;">Sélectionner</div>
+        </button>
+
+        <button type="button" data-method="mtn"
+          aria-pressed="false"
+          style="border:2px solid #ddd;border-radius:14px;padding:14px 8px;background:white;color:#18352b;min-height:115px;">
+          <img src="/images/mtn-logo.svg" alt="Logo MTN"
+            style="width:75px;height:40px;object-fit:contain;">
+          <strong>MTN MoMo</strong>
+          <div style="font-size:12px;color:#16834a;margin-top:6px;">Sélectionner</div>
+        </button>
+
+        <button type="button" disabled
+          style="border:2px solid #eee;border-radius:14px;padding:14px 8px;background:#f5f5f5;color:#777;min-height:115px;">
+          <img src="/images/orange-money.svg" alt="Logo Orange Money"
+            style="width:100%;height:40px;object-fit:contain;">
+          <strong>Orange Money</strong>
+          <div style="font-size:12px;margin-top:6px;">Indisponible</div>
+        </button>
+
+        <button type="button" disabled
+          style="border:2px solid #eee;border-radius:14px;padding:14px 8px;background:#f5f5f5;color:#777;min-height:115px;">
+          <img src="/images/moov-money.png" alt="Logo Moov"
+            style="width:100%;height:40px;object-fit:contain;">
+          <strong>Moov Money</strong>
+          <div style="font-size:12px;margin-top:6px;">Indisponible</div>
+        </button>
+
+      </div>
+
+      <label for="deposit-amount"
+        style="display:block;font-weight:bold;margin:20px 0 8px;">
+        Montant du dépôt (FCFA)
+      </label>
+
+      <input id="deposit-amount" type="number" min="3000" step="1"
+        inputmode="numeric" placeholder="Exemple : 5000"
+        style="width:100%;padding:14px;border:1px solid #ccd8d1;border-radius:10px;font-size:18px;box-sizing:border-box;">
+
+      <p id="deposit-selected"
+        style="font-size:14px;color:#64756c;">
+        Aucun moyen sélectionné.
+      </p>
+
+      <div id="payment-instructions"
+        style="display:none;margin-top:14px;padding:14px;border-radius:12px;background:#f1f8f4;border:1px solid #cce6d8;">
+        <strong id="payment-title"
+          style="display:block;margin-bottom:8px;"></strong>
+        <div id="payment-details"
+          style="font-size:14px;line-height:1.5;"></div>
+      </div>
+
+      <div id="proof-area" style="display:none;margin-top:18px;">
+        <label for="deposit-proof"
+          style="display:block;font-weight:bold;margin-bottom:8px;">
+          Capture d'écran du paiement
+        </label>
+
+        <input id="deposit-proof" type="file" accept="image/*"
+          style="width:100%;padding:10px;border:1px solid #ccd8d1;border-radius:10px;background:#fff;box-sizing:border-box;">
+
+        <p style="font-size:12px;color:#68766f;margin-top:6px;">
+          Après avoir effectué le paiement, ajoute ta capture d'écran comme preuve.
+        </p>
+      </div>
+
+      <button type="button" id="deposit-submit"
+        style="width:100%;padding:15px;border:0;border-radius:11px;background:#087548;color:white;font-weight:bold;font-size:16px;margin-top:18px;">
+        Valider mon dépôt
+      </button>
+
+      <button type="button" id="deposit-cancel"
+        style="width:100%;padding:13px;margin-top:8px;border:0;border-radius:11px;background:#eee;color:#333;font-size:15px;">
+        Annuler
+      </button>
+    </section>`;
+
+  document.body.appendChild(modal);
+
+  let selectedMethod = '';
+  let paymentStarted = false;
+
+  const cards = modal.querySelectorAll('[data-method]');
+
+  cards.forEach(card => {
+    card.onclick = () => {
+      selectedMethod = card.dataset.method;
+
+      cards.forEach(c => {
+        const active = c === card;
+        c.setAttribute('aria-pressed', String(active));
+        c.style.borderColor = active ? '#087548' : '#ddd';
+        c.style.background = active ? '#effaf3' : 'white';
+      });
+
+      modal.querySelector('#deposit-selected').textContent =
+        'Moyen choisi : ' +
+        (selectedMethod === 'wave' ? 'Wave Marchand' : 'MTN MoMo');
+
+      const instructions = modal.querySelector('#payment-instructions');
+      const title = modal.querySelector('#payment-title');
+      const details = modal.querySelector('#payment-details');
+
+      instructions.style.display = 'block';
+
+      if (selectedMethod === 'wave') {
+        title.textContent = 'Paiement Wave';
+        details.innerHTML =
+          'Après validation, le paiement Wave va s’ouvrir. ' +
+          'Effectue le paiement puis reviens ici pour envoyer la capture.';
+      } else {
+        title.textContent = 'Paiement MTN MoMo';
+        details.innerHTML =
+          '<p>Effectue ton dépôt MTN Mobile Money vers ce numéro :</p>' +
+          '<p><strong>Numéro MTN MoMo :</strong> ' +
+          '<span>+225 05 76 14 02 20</span></p>' +
+          '<button type="button" id="copy-mtn-number" class="btn">' +
+          'Copier le numéro MTN</button>' +
+          '<p>Après le paiement, reviens ici pour envoyer ta capture.</p>';
+
+        details.querySelector('#copy-mtn-number').onclick = async () => {
+          const number = '+2250576140220';
+
+          try {
+            await navigator.clipboard.writeText(number);
+            alert('Numéro MTN copié : ' + number);
+          } catch (err) {
+            const field = document.createElement('textarea');
+            field.value = number;
+            field.style.position = 'fixed';
+            field.style.opacity = '0';
+            document.body.appendChild(field);
+            field.select();
+
+            let copied = false;
+            try {
+              copied = document.execCommand('copy');
+            } catch (e) {}
+
+            field.remove();
+
+            alert(copied
+              ? 'Numéro MTN copié : ' + number
+              : 'Copie impossible. Recopie le numéro affiché.');
+          }
+        };
+      }
+    };
+  });
+
+  modal.querySelector('#deposit-cancel').onclick = () => modal.remove();
+
+  modal.querySelector('#deposit-submit').onclick = async () => {
+    const amount = Number(
+      modal.querySelector('#deposit-amount').value
+    );
+
+    if (!selectedMethod) {
+      alert('Choisis Wave Marchand ou MTN MoMo.');
+      return;
+    }
+
+    if (!Number.isSafeInteger(amount) || amount < 3000) {
+      alert('Entre un montant entier d’au moins 3 000 FCFA.');
+      return;
+    }
+
+    /*
+     * PREMIER CLIC :
+     * on ne demande PAS encore la capture.
+     * On ouvre d'abord le paiement.
+     */
+    if (!paymentStarted) {
+      if (selectedMethod === 'wave') {
+        window.open(
+          'https://pay.wave.com/m/M_ci_gwspWhhPWE3G/c/ci/',
+          '_blank',
+          'noopener,noreferrer'
+        );
+      } else {
+        alert(
+          'Effectue le paiement MTN MoMo avec les instructions affichées, puis reviens ici.'
+        );
+      }
+
+      paymentStarted = true;
+
+      const proofArea = modal.querySelector('#proof-area');
+      const submit = modal.querySelector('#deposit-submit');
+
+      proofArea.style.display = 'block';
+
+      submit.textContent = 'Envoyer la preuve du paiement';
+
+      alert(
+        'Effectue maintenant le paiement. Après le paiement, reviens dans cette fenêtre et ajoute ta capture d’écran.'
+      );
+
+      return;
+    }
+
+    /*
+     * DEUXIÈME CLIC :
+     * paiement supposé effectué -> on demande la preuve.
+     */
+    const proofInput = modal.querySelector('#deposit-proof');
+    const proofFile = proofInput.files[0];
+
+    if (!proofFile) {
+      alert('Ajoute la capture d’écran du paiement.');
+      return;
+    }
+
+    if (!proofFile.type.startsWith('image/')) {
+      alert('La preuve doit être une image.');
+      return;
+    }
+
+    if (proofFile.size > 1500000) {
+      alert('La capture doit faire moins de 1,5 Mo.');
+      return;
+    }
+
+    const submit = modal.querySelector('#deposit-submit');
+    submit.disabled = true;
+    submit.textContent = 'Préparation...';
+
+    try {
+      const proof = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = () => resolve(reader.result);
+
+        reader.onerror = () =>
+          reject(new Error('Lecture de la capture impossible.'));
+
+        reader.readAsDataURL(proofFile);
+      });
+
+      submit.textContent = 'Enregistrement...';
+
+      const response = await fetch('/api/deposit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          amount,
+          method: selectedMethod,
+          proof
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || data.error) {
+        submit.disabled = false;
+        submit.textContent = 'Envoyer la preuve du paiement';
+
+        alert(
+          data.error ||
+          'La demande n’a pas pu être enregistrée.'
+        );
+
+        return;
+      }
+
+      modal.remove();
+
+      alert(
+        data.message ||
+        'Preuve envoyée. Votre dépôt est maintenant en attente de vérification.'
+      );
+
+      await load();
+
+    } catch (e) {
+      console.error(e);
+
+      submit.disabled = false;
+      submit.textContent = 'Envoyer la preuve du paiement';
+
+      alert('Impossible de contacter le serveur.');
+    }
+  };
+}
+
+async function withdraw() {
+  if (document.getElementById('withdraw-modal')) return;
+
+  const modal = document.createElement('div');
+  modal.id = 'withdraw-modal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto;';
+
+  modal.innerHTML = `
+    <div style="background:#fff;color:#172033;width:100%;max-width:420px;border-radius:16px;padding:22px;box-sizing:border-box;max-height:95vh;overflow-y:auto;">
+      <h2 style="margin:0 0 8px;">💸 Demande de retrait</h2>
+      <p style="color:#555;font-size:13px;">Remplissez les informations ci-dessous.</p>
+
+      <label for="wd-method" style="display:block;margin-top:16px;font-weight:bold;">Moyen de réception</label>
+      <select id="wd-method" style="width:100%;padding:12px;margin-top:6px;border:1px solid #ccc;border-radius:8px;background:white;color:#172033;">
+        <option value="wave">Wave</option>
+        <option value="mtn">MTN MoMo</option>
+      </select>
+
+      <label for="wd-phone" style="display:block;margin-top:14px;font-weight:bold;">Numéro de réception</label>
+      <input id="wd-phone" type="tel" inputmode="tel" placeholder="Ex. 0700000000" style="width:100%;box-sizing:border-box;padding:12px;margin-top:6px;border:1px solid #ccc;border-radius:8px;">
+
+      <label for="wd-amount" style="display:block;margin-top:14px;font-weight:bold;">Montant à retirer (FCFA)</label>
+      <input id="wd-amount" type="number" min="1000" step="1" inputmode="numeric" placeholder="Minimum 1000" style="width:100%;box-sizing:border-box;padding:12px;margin-top:6px;border:1px solid #ccc;border-radius:8px;">
+
+      <div style="background:#f2f5f9;border-radius:10px;padding:12px;margin-top:14px;line-height:1.9;">
+        <div>Frais (8 %) : <strong id="wd-fee">0 FCFA</strong></div>
+        <div>Montant net : <strong id="wd-net">0 FCFA</strong></div>
+      </div>
+
+      <p id="wd-error" role="alert" style="color:#b91c1c;font-size:13px;"></p>
+
+      <button id="wd-submit" type="button" style="width:100%;padding:13px;border:0;border-radius:9px;background:#15803d;color:white;font-weight:bold;font-size:16px;margin-top:8px;">Confirmer le retrait</button>
+      <button id="wd-cancel" type="button" style="width:100%;padding:12px;border:1px solid #ccc;border-radius:9px;background:white;color:#333;margin-top:9px;">Annuler</button>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const amountInput = modal.querySelector('#wd-amount');
+  const feeOutput = modal.querySelector('#wd-fee');
+  const netOutput = modal.querySelector('#wd-net');
+  const submit = modal.querySelector('#wd-submit');
+  const error = modal.querySelector('#wd-error');
+  const format = n => n.toLocaleString('fr-FR') + ' FCFA';
+
+  function updateAmounts() {
+    const amount = Number(amountInput.value);
+    const valid = Number.isSafeInteger(amount) && amount >= 1000;
+    const fee = valid ? Math.round(amount * 0.08) : 0;
+    feeOutput.textContent = format(fee);
+    netOutput.textContent = format(valid ? amount - fee : 0);
+  }
+
+  amountInput.addEventListener('input', updateAmounts);
+  modal.querySelector('#wd-cancel').addEventListener('click', () => modal.remove());
+
+  modal.addEventListener('click', e => {
+    if (e.target === modal) modal.remove();
+  });
+
+  submit.addEventListener('click', async () => {
+    error.textContent = '';
+
+    const method = modal.querySelector('#wd-method').value;
+    const recipient = modal.querySelector('#wd-phone').value.trim();
+    const amount = Number(amountInput.value);
+
+    if (!/^[0-9+ ]{8,20}$/.test(recipient)) {
+      error.textContent = 'Vérifiez le numéro de réception.';
+      return;
+    }
+
+    if (!Number.isSafeInteger(amount) || amount < 1000) {
+      error.textContent = 'Le montant minimum est de 1 000 FCFA.';
+      return;
+    }
+
+    const fee = Math.round(amount * 0.08);
+    const netAmount = amount - fee;
+    const methodName = method === 'wave' ? 'Wave' : 'MTN MoMo';
+
+    if (!confirm(
+      'Confirmer la demande ?\n\n' +
+      'Moyen : ' + methodName + '\n' +
+      'Numéro : ' + recipient + '\n' +
+      'Montant : ' + format(amount) + '\n' +
+      'Frais (8 %) : ' + format(fee) + '\n' +
+      'Montant net : ' + format(netAmount) + '\n\n' +
+      'La demande restera en attente de traitement.'
+    )) return;
+
+    submit.disabled = true;
+    submit.textContent = 'Enregistrement...';
+
+    try {
+      const r = await fetch('/api/withdraw', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({amount, method, recipient})
+      });
+
+      const d = await r.json();
+
+      if (!r.ok || !d.success) {
+        error.textContent = d.error || 'Impossible d’enregistrer le retrait.';
+        return;
+      }
+
+      modal.remove();
+      alert('Demande enregistrée en attente.\nMontant net prévu : ' + format(netAmount));
+      await load();
+    } catch (e) {
+      error.textContent = 'Impossible de contacter le serveur.';
+    } finally {
+      if (submit.isConnected) {
+        submit.disabled = false;
+        submit.textContent = 'Confirmer le retrait';
+      }
+    }
+  });
+}
+
+async function logout() {
+  try {
+    await fetch('/api/logout', {method: 'POST'});
+  } finally {
+    location.href = '/';
+  }
+}
+
+$('depositButton').addEventListener('click', deposit);
+$('withdrawButton').addEventListener('click', withdraw);
+$('logoutLink').addEventListener('click', function (e) {
+  e.preventDefault();
+  logout();
+});
+
+load();
+
+const referralLink = document.getElementById('referralLink');
+const copyReferral = document.getElementById('copyReferral');
+
+if (referralLink) {
+  fetch('/api/me', {
+    credentials: 'same-origin'
+  })
+  .then(r => r.json())
+  .then(data => {
+    const user = data.user || data;
+    if (user && user.id) {
+      referralLink.value =
+        window.location.origin + '/inscription.html?ref=' + user.id;
+    }
+  })
+  .catch(() => {});
+}
+
+if (copyReferral) {
+  copyReferral.addEventListener('click', async () => {
+    if (!referralLink || !referralLink.value) return;
+
+    try {
+      await navigator.clipboard.writeText(referralLink.value);
+      copyReferral.textContent = 'Lien copié ✓';
+
+      setTimeout(() => {
+        copyReferral.textContent = 'Copier le lien';
+      }, 1500);
+    } catch (e) {
+      referralLink.select();
+      document.execCommand('copy');
+      copyReferral.textContent = 'Lien copié ✓';
+    }
+  });
+}
+
+</script>
+
+
+<script>
+(function () {
+  const toggle = document.getElementById('investpro-menu-toggle');
+  const menu = document.getElementById('menu-investpro');
+  const icon = document.getElementById('investpro-menu-icon');
+  if (!toggle || !menu) return;
+
+  toggle.addEventListener('click', function () {
+    const opening = menu.hidden;
+    menu.hidden = !opening;
+    toggle.setAttribute('aria-expanded', String(opening));
+    if (icon) icon.textContent = opening ? '✕' : '☰';
+  });
+
+  menu.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      if (link.getAttribute('href') !== '#') {
+        menu.hidden = true;
+        toggle.setAttribute('aria-expanded', 'false');
+        if (icon) icon.textContent = '☰';
+      }
+    });
+  });
+})();
+</script>
+
+
+<script>
+const changePasswordForm = document.getElementById('changePasswordForm');
+const changePasswordMessage = document.getElementById('changePasswordMessage');
+
+if (changePasswordForm) {
+  changePasswordForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const oldPassword = document.getElementById('oldPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (newPassword !== confirmPassword) {
+      changePasswordMessage.textContent =
+        'Les deux nouveaux mots de passe ne correspondent pas.';
+      changePasswordMessage.style.color = '#dc2626';
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/change-password', {
+        credentials: 'same-origin',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          oldPassword,
+          newPassword
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || data.error) {
+        changePasswordMessage.textContent =
+          data.error || 'Impossible de modifier le mot de passe.';
+        changePasswordMessage.style.color = '#dc2626';
+        return;
+      }
+
+      changePasswordMessage.textContent =
+        'Mot de passe modifié avec succès.';
+      changePasswordMessage.style.color = '#15803d';
+
+      changePasswordForm.reset();
+
+    } catch (error) {
+      changePasswordMessage.textContent =
+        'Impossible de contacter le serveur.';
+      changePasswordMessage.style.color = '#dc2626';
+    }
+  });
+}
+</script>
+
+</body>
+</html>

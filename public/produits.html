@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Produits - INVESTPRO CI</title>
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f7f6;
+  color:#123;
+}
+header{
+  background:#075d3e;
+  color:white;
+  padding:18px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+header a{
+  color:white;
+  text-decoration:none;
+}
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:30px 5%;
+}
+.container{
+  margin-bottom:30px;
+}
+.section-title{
+  margin-bottom:20px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+}
+.card{
+  background:white;
+  border-radius:12px;
+  padding:20px;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+.plan{
+  border-top:4px solid #d5a91d;
+}
+.plan h3{
+  color:#075d3e;
+  font-size:21px;
+}
+.product-photo{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border-radius:8px;
+}
+.btn{
+  display:inline-block;
+  margin-top:13px;
+  padding:11px 16px;
+  border-radius:7px;
+  background:#075d3e;
+  color:white;
+  text-decoration:none;
+  border:0;
+  cursor:pointer;
+}
+.btn-dark{
+  background:#222;
+}
+.calculator{
+  margin-top:25px;
+}
+.field{
+  margin-bottom:15px;
+}
+label{
+  display:block;
+  font-weight:bold;
+  margin-bottom:7px;
+}
+select,input{
+  width:100%;
+  box-sizing:border-box;
+  padding:12px;
+  border:1px solid #ccc;
+  border-radius:7px;
+}
+.results{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px;
+  margin-top:20px;
+}
+.result{
+  padding:15px;
+  background:#f0f4f2;
+  border-radius:8px;
+}
+.result span{
+  display:block;
+  font-size:13px;
+}
+.result strong{
+  display:block;
+  margin-top:6px;
+}
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+@media(max-width:520px){
+  main{padding:22px 4%}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <strong>♛ INVESTPRO CI</strong>
+  <a href="/dashboard.html">← Retour au tableau de bord</a>
+</header>
+
+<main>
+
+<section class="container" id="produits">
+  <div class="section-title">
+    <h2>Nos 8 produits</h2>
+    <p>Prix et gains journaliers annoncés. Appuyez sur « Calculer » pour sélectionner un produit.</p>
+  </div>
+  <div class="grid" id="productGrid"></div>
+  
+</section>
+
+<section class="container" id="calculateur">
+  <div class="section-title">
+    <h2>🧮 Calculateur de revenus</h2>
+    <p>Sélectionnez un produit et le nombre d'unités. Les résultats se mettent à jour automatiquement.</p>
+  </div>
+
+  <div class="card calculator">
+    <div class="field">
+      <label for="productSelect">Choisir un produit</label>
+      <select id="productSelect"></select>
+    </div>
+    <div class="field">
+      <label for="quantity">Nombre d'unités</label>
+      <input id="quantity" type="number" min="1" max="1000" step="1" value="1">
+    </div>
+
+    <div class="results">
+      <div class="result">
+        <span>Montant de départ</span>
+        <strong id="capital">3 000 FCFA</strong>
+      </div>
+      <div class="result">
+        <span>Gain annoncé par 24 h</span>
+        <strong id="dailyGain">1 500 FCFA</strong>
+      </div>
+      <div class="result">
+        <span>Durée de simulation</span>
+        <strong>120 jours</strong>
+      </div>
+      <div class="result">
+        <span>Gains théoriques sur 120 jours</span>
+        <strong id="totalGain">180 000 FCFA</strong>
+      </div>
+      <div class="result primary">
+        <span>Capital + gains théoriques, avant frais éventuels</span>
+        <strong id="grandTotal">183 000 FCFA</strong>
+      </div>
+    </div>
+
+    <p class="small"></p>
+    <div class="actions">
+      <button class="btn" type="button" id="investButton">Investir</button>
+      <a class="btn btn-dark" href="/dashboard.html">Retour au tableau de bord</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+const products = [
+  {id:'V1', price:3000, gain:1500},
+  {id:'V2', price:10000, gain:4000},
+  {id:'V3', price:25000, gain:10000},
+  {id:'V4', price:50000, gain:20000},
+  {id:'V5', price:100000, gain:40000},
+  {id:'V6', price:250000, gain:100000},
+  {id:'V7', price:500000, gain:200000},
+  {id:'V8', price:1000000, gain:400000}
+];
+
+const money = n => Math.round(n).toLocaleString('fr-FR') + ' FCFA';
+
+const grid = document.getElementById('productGrid');
+const select = document.getElementById('productSelect');
+
+products.forEach(p => {
+  const card = document.createElement('article');
+  card.className = 'card plan';
+
+  const img = document.createElement('img');
+  img.className = 'product-photo';
+  img.src = 'https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=600&q=75';
+  img.alt = 'Produit ' + p.id;
+  img.loading = 'lazy';
+  img.onerror = function(){this.style.display='none';};
+
+  const title = document.createElement('h3');
+  title.textContent = p.id;
+
+  const price = document.createElement('p');
+  price.textContent = 'Prix : ' + money(p.price);
+
+  const gain = document.createElement('p');
+  gain.textContent = 'Gain annoncé / 24 h : ' + money(p.gain);
+
+  const button = document.createElement('button');
+  button.className = 'btn';
+  button.textContent = 'Calculer';
+  button.onclick = function(){
+    select.value = p.id;
+    document.getElementById('quantity').value = 1;
+    updateCalculator();
+    document.getElementById('calculateur').scrollIntoView({
+      behavior:'smooth'
+    });
+  };
+
+  card.appendChild(img);
+  card.appendChild(title);
+  card.appendChild(price);
+  card.appendChild(gain);
+  card.appendChild(button);
+  grid.appendChild(card);
+
+  const option = document.createElement('option');
+  option.value = p.id;
+  option.textContent = p.id + ' — ' + money(p.price);
+  select.appendChild(option);
+});
+
+function updateCalculator(){
+  const p = products.find(x => x.id === select.value) || products[0];
+  const quantity = Math.max(
+    1,
+    Math.min(1000, Number(document.getElementById('quantity').value) || 1)
+  );
+
+  const capital = p.price * quantity;
+  const dailyGain = p.gain * quantity;
+  const totalGain = dailyGain * 120;
+  const grandTotal = capital + totalGain;
+
+  document.getElementById('capital').textContent = money(capital);
+  document.getElementById('dailyGain').textContent = money(dailyGain);
+  document.getElementById('totalGain').textContent = money(totalGain);
+  document.getElementById('grandTotal').textContent = money(grandTotal);
+}
+
+select.addEventListener('change', updateCalculator);
+document.getElementById('quantity').addEventListener('input', updateCalculator);
+
+updateCalculator();
+
+document.getElementById('investButton')?.addEventListener('click', async function () {
+  const p = products.find(x => x.id === select.value) || products[0];
+  const quantity = Math.max(
+    1,
+    Math.min(1000, Number(document.getElementById('quantity').value) || 1)
+  );
+
+  const amount = p.price * quantity;
+
+  if (!Number.isInteger(amount) || amount < 3000) {
+    alert('Montant d’investissement invalide.');
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/me', {
+      credentials: 'same-origin'
+    });
+
+    if (!response.ok) {
+      alert('Veuillez vous connecter pour investir.');
+      window.location.href = '/connexion.html';
+      return;
+    }
+
+    const user = await response.json();
+
+    if (!user || !user.user) {
+      alert('Session utilisateur introuvable.');
+      window.location.href = '/connexion.html';
+      return;
+    }
+
+    const confirmation = confirm(
+      'Produit : ' + p.id +
+      '\nMontant : ' + money(amount) +
+      '\n\nConfirmer l’investissement ?'
+    );
+
+    if (!confirmation) return;
+
+    const investResponse = await fetch('/api/invest', {
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        plan: p.id,
+        amount: amount
+      })
+    });
+
+    const data = await investResponse.json();
+
+    if (!investResponse.ok || data.error) {
+      alert(data.error || 'Impossible d’enregistrer l’investissement.');
+      return;
+    }
+
+    alert(data.message || 'Investissement enregistré avec succès.');
+    window.location.href = '/dashboard.html';
+
+  } catch (error) {
+    alert('Impossible de contacter le serveur.');
+  }
+});
+
+</script>
+
+</body>
+</html>
